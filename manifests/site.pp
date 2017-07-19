@@ -10,7 +10,14 @@
 # node definitions.)
 
 ## Active Configurations ##
-
+# <ENVIRONMENTS DIRECTORY>/production/manifests/site.pp
+# top level tweaks for windows
+if $facts['os']['family'] == 'windows' {
+  # default package provider
+  Package {
+    provider => 'chocolatey',
+  }
+}
 # PRIMARY FILEBUCKET
 # This configures puppet agent and puppet inspect to back up file contents when
 # they run. The Puppet Enterprise console needs this to display file contents

@@ -20,7 +20,7 @@ class nginx {
     ensure => file,
     owner  => $owner,
     group  => $group,
-    mode   => '0644',
+    mode   => '0664',
   }
   
   file { 'docroot':

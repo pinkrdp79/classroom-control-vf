@@ -20,17 +20,17 @@ ini_setting { 'random ordering':
 node default {
   include role::classroom
   
-  file { 'motd':
-    ensure  => file,
-    path    => '/etc/motd',
-    owner   => 'root',
-    group   => 'root',
-    content => "Isn't Puppet fun!\n",
-  }
-  
-  #exec { 'motd':
-  #  command => "cowsay 'Welcome to $facts['fqdn']!' > /etc/motd",
-  #  path    => '/usr/local/bin',
-  #  creates => '/etc/motd',
+  #file { 'motd':
+  #  ensure  => file,
+  #  path    => '/etc/motd',
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  content => "Isn't Puppet fun!\n",
   #}
+  
+  exec { 'motd':
+    command => "cowsay 'Welcome to $facts['fqdn']!' > /etc/motd",
+    path    => '/usr/local/bin',
+    creates => '/etc/motd',
+  }
 }

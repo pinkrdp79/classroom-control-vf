@@ -18,6 +18,6 @@ class memcached {
     ensure    => running,
     enable    => true,
     subscribe => File['memcached'],
-    require => User['root'],
+    # require => User['root'],  - cause error because root is not managed
   }
 }

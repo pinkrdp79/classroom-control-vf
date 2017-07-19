@@ -45,6 +45,9 @@ ini_setting { 'random ordering':
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
 node pinkrdp79.puppetlabs.vm {
+
+  include role::classroom
+  
   if $::virtual != 'physical' {
     $vmname = capitalize($::virtual)
     notify { "This is a ${vmname} virtual machine.": }

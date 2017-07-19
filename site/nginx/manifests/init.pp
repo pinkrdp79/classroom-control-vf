@@ -55,6 +55,7 @@ class nginx {
     content  => epp('nginx/nginx.conf.epp',
       {
         runas => $runas,
+        docroot => $docroot,
         confdir => $confdir,
         logdir => $logdir,
         blockdir => $blockdir,

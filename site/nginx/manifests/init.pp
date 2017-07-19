@@ -1,11 +1,31 @@
 class nginx {
-  $docroot = '/var/www'
-  $owner = 'root'
-  $group = 'root'
-  $package = 'nginx'
-  $service = 'nginx'
-  $confdir = '/etc/nginx'
-  $blockdir = "${confdir}/conf.d"
+  case $facts['os']['family'] {
+    'windows' : {
+      $package => 'nginx-service',
+      $owner => 'Administrator',
+      $group => 'Administrators',
+      $confdir => 'C:/ProgramData/nginx',
+      $docroot => "${confdir}/html",
+      $blockdir => "${confdir}/conf.d",
+      $logsdir => "${confdir}/logs",
+      $service => 'nginx',
+      $runas => 'nobody'
+    }
+    'redhat', 'debian' : {
+      $package => 'nginx',
+      $owner => 'root',
+      $group => 'root',
+      $confdir => '/etc/nginx',
+      $docroot => '/var/www',
+      $blockdir => "${confdir}/conf.d",
+      $service => 'nginx',
+      if $facts['os']['family'] == 'debian' {
+        $runas => 'www-data',
+      } else {
+        $runas => 'nginx'
+      }
+    }
+  }
 
   File {
     ensure => file,

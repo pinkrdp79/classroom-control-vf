@@ -1,8 +1,8 @@
 class nginx {
-  $owner = 'root'
-  $group = 'root'
+  $owner  = 'root'
+  $group  = 'root'
   $mysource = 'puppet:///modules/nginx'
-  $mode   => '0664'
+  $mode   = '0664'
 
   package { 'nginx':
     ensure => present,

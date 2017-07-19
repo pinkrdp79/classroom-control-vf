@@ -18,7 +18,7 @@ class nginx {
   }
   file { 'index.html':
     ensure => file,
-    path = '/var/www/index.html',
+    path => '/var/www/index.html',
     owner => 'nginx',
     group => 'nginx',
     mode => '0644',

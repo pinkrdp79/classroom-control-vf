@@ -1,45 +1,35 @@
 class nginx {
+  File {
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0664',
+    require => Package['nginx'],
+  }
   package { 'nginx':
     ensure => present,
-    before => [                                                  # Break arrays up into multiple
-      File['index.html'],                                        # lines as to not go beyond the
-      File['nginx.conf'],                                        # 80 characters per line and it
-      File['default.conf'],                                      # makes it easier to add new
-    ]                                                            # elements and easier to read.
   }
 
   file { 'docroot':
     ensure => directory,
     path   => '/var/www',
-    owner  => 'root',
-    group  => 'root',
     mode   => '0755',
   }
 
   file { 'index.html':                                           # use titles instead of full paths
     ensure => file,
     path   => '/var/www/index.html',                             # using namevars make it easy to reference them later
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
     source => 'puppet:///modules/nginx/index.html',
   }
 
   file { 'nginx.conf':                                           # use title
     ensure => file,
     path   => '/etc/nginx/nginx.conf',                           # use of namevar
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
     source => 'puppet:///modules/nginx/nginx.conf',
   }
 
   file { 'default.conf':                                         # use of title
     ensure => file,
     path   => '/etc/nginx/conf.d/default.conf',                  # use of namevar
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
     source => 'puppet:///modules/nginx/default.conf',
   }
 

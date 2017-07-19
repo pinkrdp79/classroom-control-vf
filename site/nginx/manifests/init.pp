@@ -19,7 +19,7 @@ class nginx {
 
   file { 'nginx.conf':                                           # use title
     ensure => file,
-    path   => /etc/nginx/nginx.conf',                            # use of namevar
+    path   => '/etc/nginx/nginx.conf',                            # use of namevar
     owner  => 'root',
     group  => 'root',
     mode   => '0664',

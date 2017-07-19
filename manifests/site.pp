@@ -42,9 +42,9 @@ node default {
   # This is where you can declare classes for all nodes.
   # Example:
   #   class { 'my_class': }
-  include role::classroom
+  # include role::classroom
   
-  notify { "${::fqdn} has DEFAULT node definition": }
+  # notify { "${::fqdn} has DEFAULT node definition": }
 
   # file { 'motd':
   #  ensure  => file,
@@ -53,9 +53,9 @@ node default {
   #  group   => 'root',
   #  content => "Isn't Puppet fun!\n",
   # }
-  exec { 'motd':
-    command => "cowsay 'Welcome to $fqdn!' > /etc/motd",
-    path    => '/usr/local/bin',
-    creates => '/etc/motd',
-  }
+  # exec { 'motd':
+  #  command => "cowsay 'Welcome to $fqdn!' > /etc/motd",
+  #  path    => '/usr/local/bin',
+  #  creates => '/etc/motd',
+  # }
 }

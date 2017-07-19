@@ -1,10 +1,14 @@
 class nginx {
   $docroot = '/var/www/'
   $confroot = '/etc/nginx/'
+  $owner = 'root'
+  $group = 'root'
+  $mode = '0664'
+  
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664', 
+    owner  => $owner,
+    group  => $group,
+    mode   => $mode, 
   }
   package { 'nginx':
     ensure => present,

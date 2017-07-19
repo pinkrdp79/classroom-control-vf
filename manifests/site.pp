@@ -17,10 +17,6 @@ node josephoaks.puppetlabs.vm {
   }
 }
 
-node /^dev*\.puppetlabs\.vm/ {
-
-}
-
 node default {
   include role::classroom
   

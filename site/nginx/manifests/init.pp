@@ -7,7 +7,15 @@ class nginx {
       File['default.conf'],                                     # makes it easier to add new
     ]                                                           # elements and easier to read.
   }
-
+  
+  file { 'docroot':
+    ensure => directory,
+    path   => '/var/www',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+  
   file { 'index.html':                                          # use titles instead of full paths
     ensure => file,
     path   => '/var/www/index.html',                            # using namevars make it easy to reference them later

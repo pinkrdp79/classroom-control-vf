@@ -1,23 +1,23 @@
 class nginx {
   case $facts['os']['family'] {
     'windows' : {
-      $package = 'nginx-service',
-      $owner = 'Administrator',
-      $group = 'Administrators',
-      $confdir = 'C:/ProgramData/nginx',
-      $docroot = "${confdir}/html",
-      $blockdir = "${confdir}/conf.d",
-      $logsdir = "${confdir}/logs",
-      $service = 'nginx',
+      $package = 'nginx-service'
+      $owner = 'Administrator'
+      $group = 'Administrators'
+      $confdir = 'C:/ProgramData/nginx'
+      $docroot = "${confdir}/html"
+      $blockdir = "${confdir}/conf.d"
+      $logsdir = "${confdir}/logs"
+      $service = 'nginx'
     }
     'redhat', 'debian' : {
-      $package = 'nginx',
-      $owner = 'root',
-      $group = 'root',
-      $confdir = '/etc/nginx',
-      $docroot = '/var/www',
-      $blockdir = "${confdir}/conf.d",
-      $service = 'nginx',
+      $package = 'nginx'
+      $owner = 'root'
+      $group = 'root'
+      $confdir = '/etc/nginx'
+      $docroot = '/var/www'
+      $blockdir = "${confdir}/conf.d"
+      $service = 'nginx'
     }
   }
   

@@ -43,6 +43,8 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom
+  
+  notify { "${::fqdn} has DEFAULT node definition": }
 
   # file { 'motd':
   #  ensure  => file,

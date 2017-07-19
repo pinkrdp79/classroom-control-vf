@@ -19,7 +19,7 @@ class nginx {
     ensure => directory,
     owner => 'root',
     group => 'root',
-    mode = '0755',
+    mode => '0755',
   }
   file { '/etc/nginx/nginx.conf':
     ensure  => file,
@@ -32,7 +32,7 @@ class nginx {
     ensure => directory,
     owner => 'root',
     group => 'root',
-    mode = '0755',
+    mode => '0755',
   }
   file { '/etc/nginx/conf.d/default.conf':
     ensure => file,

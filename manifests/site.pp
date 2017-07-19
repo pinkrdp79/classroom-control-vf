@@ -44,7 +44,7 @@ node default {
   #   class { 'my_class': }
   include role::classroom
   include users
-  include nginx
+  #include nginx
   #include examples::fundamentals
   
  # file { 'motd':

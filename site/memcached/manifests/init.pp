@@ -18,5 +18,6 @@ class memcached {
     ensure    => running,
     enable    => true,
     subscribe => File['memcached'],
+    require => User['root'],
   }
 }

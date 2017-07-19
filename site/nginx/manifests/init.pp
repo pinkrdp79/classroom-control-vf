@@ -22,7 +22,7 @@ class nginx {
   file { 'index.html':                                          
     ensure => file,
     path   => '/var/www/index.html',                            
-    source => '${mysource}/index.html',
+    source => '$mysource/index.html',
   }
 
   file { 'nginx.conf':                                           

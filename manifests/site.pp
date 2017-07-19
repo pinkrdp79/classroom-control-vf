@@ -13,8 +13,8 @@ ini_setting { 'random ordering':
 
 node jreitmayer.puppetlabs.vm {
   if $facts['virtual'] == 'docker' {
-  $vmname = $facts['virtual']
-  notify { "This is a ${vmname} machine.":}  
+    $vmname = $facts['virtual']
+    notify { "This is a ${vmname} machine.":}  
   }
 }
 

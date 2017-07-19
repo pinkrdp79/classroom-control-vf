@@ -38,16 +38,17 @@ ini_setting { 'random ordering':
 # will be included in every node's catalog, *in addition* to any classes
 # specified in the console for that node.
 
+node marykelsch.puppetlabs.vm {
+  if $facts['virtual'] != 'physical' {
+    $vmname = $facts['virtual']
+    notify { "This is a ${vmname} virtual machine.": }
+  }
+}
+
 node default {
   # This is where you can declare classes for all nodes.
   # Example:
   #   class { 'my_class': }
-
-  if $::virtual != 'physical' {
-    $vmname = capitalize($::virtual)
-    notify {"This is a ${vmname} virtual machine.":}
-    }
-  }
   
   include role::classroom
   

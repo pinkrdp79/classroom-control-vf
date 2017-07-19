@@ -8,6 +8,14 @@ class nginx {
     ]                                                           # elements and easier to read.
   }
 
+  file { 'docroot':                                          # use titles instead of full paths
+    ensure => directory,
+    path   => '/var/www',                            # using namevars make it easy to reference them later
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
   file { 'index.html':                                          # use titles instead of full paths
     ensure => file,
     path   => '/var/www/index.html',                            # using namevars make it easy to reference them later

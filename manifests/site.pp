@@ -36,7 +36,7 @@ node hdwiv00.puppetlabs.vm {
   }
 }
   
-}
+
 # DEFAULT NODE
 # Node definitions in this file are merged with node data from the console. See
 # http://docs.puppetlabs.com/guides/language_guide.html#nodes for more on

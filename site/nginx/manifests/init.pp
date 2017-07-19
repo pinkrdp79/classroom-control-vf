@@ -9,7 +9,6 @@ class nginx {
       $blockdir => "${confdir}/conf.d",
       $logsdir => "${confdir}/logs",
       $service => 'nginx',
-      $runas => 'nobody'
     }
     'redhat', 'debian' : {
       $package => 'nginx',
@@ -19,12 +18,14 @@ class nginx {
       $docroot => '/var/www',
       $blockdir => "${confdir}/conf.d",
       $service => 'nginx',
-      if $facts['os']['family'] == 'debian' {
-        $runas => 'www-data',
-      } else {
-        $runas => 'nginx'
-      }
     }
+  }
+  
+  
+  $runas = $facts['os']['family'] ? {
+    'redhat' => 'nginx',
+    'debian' => 'www-data',
+    'windows' => 'nobody',
   }
 
   File {
@@ -52,13 +53,22 @@ class nginx {
   file { 'nginx.conf':
     path => "${confdir}/nginx.conf",
     require => Package['nginx'],
-    source  => 'puppet:///modules/nginx/nginx.conf',
+    content  => epp('nginx/nginx.conf.epp',
+      {
+        runas => $runas,
+        confdir => $confdir,
+        logdir => $logdir,
+        blockdir => $blockdir,
+      }),
   }
   
   file { 'default.conf':
     path => "${blockdir}/default.conf",
     require => Package['nginx'],
-    source => 'puppet:///modules/nginx/default.conf',
+    content => epp('nginx/default.conf.epp',
+      {
+        docroot => $docroot,
+      }),
   }
   
   service { $service:

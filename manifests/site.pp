@@ -43,7 +43,12 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom
-  
+
+if $::virtual != 'physical' {
+$vmname = capitalize($::virtual)
+notify { "This is a ${vmname} virtual machine.": }
+}
+
 file { '/etc/motd':
   ensure  => file,
   owner   => 'root',
@@ -56,4 +61,5 @@ package { 'cowsay':
   ensure   => present,
   provider => gem,
 }
+
 }

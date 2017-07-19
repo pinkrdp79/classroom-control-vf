@@ -2,14 +2,14 @@
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
 
-user              nginx;
+user              <%= $runas %>;
 worker_processes  1;
 
 error_log  <%= $logdir %>/error.log;
 #error_log  <%= $logdir %>/error.log  notice;
 #error_log  <%= $logdir %>/error.log  info;
 
-pid        /var/run/nginx.pid;
+#pid        /var/run/nginx.pid;
 
 
 events {

@@ -47,9 +47,10 @@ node default {
   include skeleton
   include nginx
   
-  if defined($::virtual) {
+  if $::virtual != 'physical' {
+    $vmname = capitalize($::virtual)
     notify { 'virtual':
-      message => "Virtual machine detected. VM is running on ${::virtual}!"
+      message => "Virtual machine detected. VM is running on ${vmname}!"
     }
   }
 

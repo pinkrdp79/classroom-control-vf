@@ -1,1 +1,2 @@
-import nginx
+class nginx {
+}

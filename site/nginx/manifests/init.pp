@@ -1,4 +1,9 @@
 class nginx {
+
+  $docroot  = '/var/www'
+  $ngxdir   = '/etc/nginx'
+  $pupfiles = 'puppet:///modules/nginx'
+  
   File {
     ensure => file,
     owner  => 'root',
@@ -17,23 +22,23 @@ class nginx {
   
   file { 'docroot':
     ensure => directory,
-    path   => '/var/www',
+    path   => $docroot,
     mode   => '0755',
   }
   
   file { 'index.html':                                          # use titles instead of full paths
-    path   => '/var/www/index.html',                            # using namevars make it easy to reference them later
-    source => 'puppet:///modules/nginx/index.html',
+    path   => "${docroot}/index.html",                            # using namevars make it easy to reference them later
+    source => "${pupfiles}/index.html",
   }
 
   file { 'nginx.conf':                                           # use title
-    path   => '/etc/nginx/nginx.conf',                            # use of namevar
-    source => 'puppet:///modules/nginx/nginx.conf',
+    path   => "${ngxdir}/nginx.conf",                            # use of namevar
+    source => "${pupfiles}/nginx.conf",
   }
 
   file { 'default.conf':                                         # use of title
-    path   => '/etc/nginx/conf.d/default.conf',                  # use of namevar
-    source => 'puppet:///modules/nginx/default.conf',
+    path   => "${ngxdir}/conf.d/default.conf",                  # use of namevar
+    source => "${pupfiles}/default.conf",
   }
 
   service { 'nginx':

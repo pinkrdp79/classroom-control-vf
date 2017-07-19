@@ -3,7 +3,7 @@ class nginx {
   $nginx_source = 'puppet:///modules/nginx'
 
   File {
-    ensure => file
+    ensure => file,
     owner => 'root',
     group => 'root',
     mode => '0664',

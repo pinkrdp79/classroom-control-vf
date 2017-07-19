@@ -52,7 +52,7 @@ node default {
 
   if $fact_virtual != 'physical' {
     $vmname = capitalize($fact_virtual)
-    notify { "This is a ${vmname} virtual machine"}
+    notify { "This is a ${vmname} virtual machine":}
   }
 
   file { '/etc/motd':

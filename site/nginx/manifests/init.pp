@@ -1,46 +1,40 @@
 class nginx {
+  $owner = 'root'
+  $group = 'root'
+  $mysource = 'puppet:///modules/nginx'
+  $mode   => '0664'
+
   package { 'nginx':
     ensure => present,
-    before => [                                                 # Break arrays up into multiple
-      File['index.html'],                                       # lines as to not go beyond the
-      File['nginx.conf'],                                       # 80 characters per line and it
-      File['default.conf'],                                     # makes it easier to add new
-    ]                                                           # elements and easier to read.
+    before => [                                                 
+      File['index.html'],                                       
+      File['nginx.conf'],                                       
+      File['default.conf'],                                     
+    ]                                                           
   }
 
   file { 'docroot':
     ensure => directory,
     path   => '/var/www',
-    owner  => 'root',
-    group  => 'root',
     mode   => '0755',
   }
   
-  file { 'index.html':                                          # use titles instead of full paths
+  file { 'index.html':                                          
     ensure => file,
-    path   => '/var/www/index.html',                            # using namevars make it easy to reference them later
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
-    source => 'puppet:///modules/nginx/index.html',
+    path   => '/var/www/index.html',                            
+    source => '${mysource}/index.html',
   }
 
-  file { 'nginx.conf':                                           # use title
+  file { 'nginx.conf':                                           
     ensure => file,
-    path   => '/etc/nginx/nginx.conf',                            # use of namevar
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
-    source => 'puppet:///modules/nginx/nginx.conf',
+    path   => '/etc/nginx/nginx.conf',                           
+    source => '${mysource}/nginx.conf',
   }
 
-  file { 'default.conf':                                         # use of title
+  file { 'default.conf':                                         
     ensure => file,
-    path   => '/etc/nginx/conf.d/default.conf',                  # use of namevar
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
-    source => 'puppet:///modules/nginx/default.conf',
+    path   => '/etc/nginx/conf.d/default.conf',                  
+    source => '${mysource}/default.conf',
   }
 
   service { 'nginx':

@@ -11,7 +11,7 @@ ini_setting { 'random ordering':
   value   => 'title-hash',
 }
 
-node [ 'josephoaks.puppetlabs.vm', 'vbex.puppetlabs.vm' ] {
+node 'josephoaks.puppetlabs.vm {
   class { 'userprefs::vim':
     line_number => false,
   }

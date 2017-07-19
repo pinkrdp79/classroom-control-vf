@@ -43,8 +43,8 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom
-  include users
-  include nginx
+  #include users
+  #include nginx
   #include examples::fundamentals
   
  # file { 'motd':

@@ -44,4 +44,8 @@ node default {
   #   class { 'my_class': }
   include role::classroom
   include skeleton
+  if $facts['virtual'] != 'physical' {
+    $vmname = $facts['virtual']
+    notify {"This is a ${vmname} virtual machine.":}
+  }
 }

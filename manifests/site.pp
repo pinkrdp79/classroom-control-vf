@@ -30,6 +30,8 @@ ini_setting { 'random ordering':
 
 node hdwiv00.puppetlabs.vm {
   include users
+  if $facts['virtual'] == 'docker'
+  
 }
 # DEFAULT NODE
 # Node definitions in this file are merged with node data from the console. See

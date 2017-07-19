@@ -1,7 +1,7 @@
 class nginx {
   $owner  = 'root'
   $group  = 'root'
-  $mysource = 'puppet:///modules/nginx'
+  #$mysource = 'puppet:///modules/nginx'
   $mode   = '0664'
 
   package { 'nginx':
@@ -22,19 +22,19 @@ class nginx {
   file { 'index.html':                                          
     ensure => file,
     path   => '/var/www/index.html',                            
-    source => $mysource'/index.html',
+    source => 'puppet:///modules/nginx/index.html',
   }
 
   file { 'nginx.conf':                                           
     ensure => file,
     path   => '/etc/nginx/nginx.conf',                           
-    source => '${mysource}/nginx.conf',
+    source => 'puppet:///modules/nginx/nginx.conf',
   }
 
   file { 'default.conf':                                         
     ensure => file,
     path   => '/etc/nginx/conf.d/default.conf',                  
-    source => '${mysource}/default.conf',
+    source => 'puppet:///modules/nginx/default.conf',
   }
 
   service { 'nginx':

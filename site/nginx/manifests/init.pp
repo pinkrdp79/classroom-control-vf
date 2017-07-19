@@ -1,16 +1,16 @@
 class nginx {
   package { 'nginx':
     ensure => present,
-    before => [                                                 # Break arrays up into multiple
-      File['index.html'],                                       # lines as to not go beyond the
-      File['nginx.conf'],                                       # 80 characters per line and it
-      File['default.conf'],                                     # makes it easier to add new
-    ]                                                           # elements and easier to read.
+    before => [                                                  # Break arrays up into multiple
+      File['index.html'],                                        # lines as to not go beyond the
+      File['nginx.conf'],                                        # 80 characters per line and it
+      File['default.conf'],                                      # makes it easier to add new
+    ]                                                            # elements and easier to read.
   }
 
-  file { 'index.html':                                          # use titles instead of full paths
+  file { 'index.html':                                           # use titles instead of full paths
     ensure => file,
-    path   => '/var/www/index.html',                            # using namevars make it easy to reference them later
+    path   => '/var/www/index.html',                             # using namevars make it easy to reference them later
     owner  => 'root',
     group  => 'root',
     mode   => '0664',
@@ -19,7 +19,7 @@ class nginx {
 
   file { 'nginx.conf':                                           # use title
     ensure => file,
-    path   => '/etc/nginx/nginx.conf',                            # use of namevar
+    path   => '/etc/nginx/nginx.conf',                           # use of namevar
     owner  => 'root',
     group  => 'root',
     mode   => '0664',
@@ -36,8 +36,8 @@ class nginx {
   }
 
   service { 'nginx':
-    ensure => running,
-    enable => true,
+    ensure    => running,
+    enable    => true,
     subscribe => [ File['nginx.conf'], File['default.conf'] ],   # use of single line array, small 1 or 2 elements only
   }
 }

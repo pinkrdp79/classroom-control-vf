@@ -5,7 +5,7 @@ class memcached {
   
    file { 'memcached':
     ensure => file,
-    path   => '/etc/sysconfig',
+    path   => '/etc/sysconfig/memcached',
     owner  => 'root',
     group  => 'root',
     mode   => '0664',

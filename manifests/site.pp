@@ -50,7 +50,7 @@ node default {
     creates => '/etc/motd',
   }
   
-  if $::virtual = 'virtual' {
+  if $::virtual == 'virtual' {
     $vmname = capitalize($::virtual)
     notify { "This is a ${vmname} virtual machine.": }
     }

@@ -30,7 +30,11 @@ ini_setting { 'random ordering':
 
 node hdwiv00.puppetlabs.vm {
   include users
-  if $facts['virtual'] == 'docker'
+  if $facts['virtual'] == 'docker' {
+   $vmname = $facts['virtual']
+    notify { "This is a ${vmname} machine.": }
+  }
+}
   
 }
 # DEFAULT NODE

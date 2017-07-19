@@ -1,6 +1,6 @@
 class memcached {
   package { 'memcached':
-    ensure => true,
+    ensure => present,
   }
   
   file { 'memcached':
@@ -11,6 +11,7 @@ class memcached {
     mode => '0644',
     source => 'puppet:///modules/memcached/memcached',
     require => Package['memcached'],
+    notify => Service['memcached'],
   }
   
   service { 'memcached':

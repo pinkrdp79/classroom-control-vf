@@ -1,16 +1,24 @@
 class memcached {
   package { 'memcached':
     ensure => present,
-    before => [                                                  # Break arrays up into multiple                                        
-      File['memcached.conf'],                                      # makes it easier to add new
-    ]                                                            # elements and easier to read.
   }
   
-   file { 'memcached.conf':
+   file { 'memcached':
     ensure => file,
     path   => '/etc/sysconfig',
     owner  => 'root',
     group  => 'root',
     mode   => '0664',
+    source => 'puppet:///modules/memcached/memcached',
+    require => package ['memcached'],
  
   }
+  
+  service { 'memcached' 
+    ensure => running,
+    enable => true,
+    require => package ['memcached'],
+    }
+    
+    }
+    

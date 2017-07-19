@@ -1,47 +1,42 @@
 class nginx {
-  package { 'nginx':
-    ensure => present,
-    before => [
-      File['index.html'],
-      File['nginx.conf'],
-      File['default.conf']
-    ]
+  $docroot = '/var/www'
+  $owner = 'root'
+  $group = 'root'
+  $package = 'nginx'
+  $service = 'nginx'
+  $confdir = '/etc/nginx'
+  $blockdir = '${confdir}/conf.d'
+
+  File {
+    ensure => 'file',
+    owner => $owner,
+    group => $group,
+    mode => '0644',
+    require => Package['nginx']
   }
-  user { 'nginx':
-    ensure => present,
+
+  package { $package:
+    ensure => present
   }
   file { 'docroot':
     ensure => directory,
-    path => '/var/www',
-    owner => 'nginx',
-    group => 'nginx',
-    mode => '0755',
+    path => $docroot,
   }
   file { 'index.html':
-    ensure => file,
-    path => '/var/www/index.html',
-    owner => 'nginx',
-    group => 'nginx',
-    mode => '0644',
+    path => '${docroot}/index.html',
     source => 'puppet:///modules/nginx/index.html',
   }
   file { 'nginx.conf':
-    ensure  => file,
-    path => '/etc/nginx/nginx.conf',
-    owner   => 'root',
-    group   => 'root',
+    path => '${confdir}/nginx.conf',
     require => Package['nginx'],
     source  => 'puppet:///modules/nginx/nginx.conf',
   }
   file { 'default.conf':
-    ensure => file,
-    path => '/etc/nginx/conf.d/default.conf',
-    owner => 'root',
-    group => 'root',
+    path => '${blockdir}/default.conf',
     require => Package['nginx'],
     source => 'puppet:///modules/nginx/default.conf',
   }
-  service { 'nginx':
+  service { $service:
     ensure    => running,
     enable    => true,
     subscribe => [ File['nginx.conf'], File['default.conf'] ]

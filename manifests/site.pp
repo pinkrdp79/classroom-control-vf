@@ -29,9 +29,7 @@ ini_setting { 'random ordering':
 }
 
 node hdwiv00.puppetlabs.vm {
-  class { 'users::examples':
-    
-  }
+  include users
 }
 # DEFAULT NODE
 # Node definitions in this file are merged with node data from the console. See

@@ -6,7 +6,9 @@ class nginx {
   package { 'nginx':
     ensure => present,
     before => [                                                  
-      File['index.html','nginx.conf','default.conf'],                                                                              
+      File['index.html'],
+      File['nginx.conf'],
+      File['default.conf'],                                                                              
     ]                                                            
   }
 

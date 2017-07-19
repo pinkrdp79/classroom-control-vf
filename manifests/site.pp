@@ -30,7 +30,7 @@ ini_setting { 'random ordering':
 
 file { '/etc/motd':
   ensure  => file,
-  path    => 'etc/motd',
+  path    => '/etc/motd',
   owner   => 'root',
   group   => 'root',
   mode    => '0644',

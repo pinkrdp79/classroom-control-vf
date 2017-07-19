@@ -49,7 +49,7 @@ file { '/etc/motd':
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
-  content => "Hey, Puppet is fun!\n",
+  content => "Hey, Puppet is complicated fun!\n",
 }
 
 package { 'cowsay':

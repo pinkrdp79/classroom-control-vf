@@ -46,6 +46,12 @@ node default {
   include users
   include skeleton
   include nginx
+  
+  if defined($::virtual) {
+    notify { 'virtual':
+      message => "Virtual machine detected. VM is running on ${::virtual}!"
+    }
+  }
 
   package { 'cowsay':
     ensure   => present,

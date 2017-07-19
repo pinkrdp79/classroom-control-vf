@@ -1,5 +1,5 @@
 class memcached {
-  package {
+  package { 'memcached':
     ensure => present,
   }
   
@@ -13,8 +13,8 @@ class memcached {
   {
 
   service { 'memcached':
-    ensure    => running,
-    enable    => true,
+    ensure    => 'running',
+    enable    => 'true',
     subscribe => [ File['memcached.conf']],
   }
 }

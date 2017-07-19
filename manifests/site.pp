@@ -44,6 +44,7 @@ node default {
   #   class { 'my_class': }
   include role::classroom    
   include users
+  include skeleton
 
   package { 'cowsay':
     ensure   => present,

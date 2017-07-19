@@ -43,7 +43,7 @@ class nginx {
     source => 'puppet:///modules/nginx/default.conf',
   }
 
-  service { $nginx:
+  service { $service:
     ensure    => running,
     enable    => true,
     subscribe => [ File['nginx.conf'], File['default.conf'] ],  

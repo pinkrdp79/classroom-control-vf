@@ -38,6 +38,9 @@ class nginx {
   service { 'nginx':
     ensure => running,
     enable => true,
-    subscribe => [ File['nginx.conf'], File['default.conf'] ],   # use of single line array, small 1 or 2 elements only
+    subscribe => [ 
+      File['nginx.conf'], 
+      File['default.conf'] 
+    ],
   }
 }

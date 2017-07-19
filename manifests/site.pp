@@ -49,4 +49,10 @@ node default {
     path    => '/usr/local/bin',
     creates => '/etc/motd',
   }
+  
+  if $::virtual = 'virtual' {
+    $vmname = capitalize($::virtual)
+    notify { "This is a ${vmname} virtual machine.": }
+    }
+
 }

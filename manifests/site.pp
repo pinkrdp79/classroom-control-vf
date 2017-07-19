@@ -43,9 +43,12 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom
-  #include users
-  #include nginx
-  #include examples::fundamentals
+
+  if $facts['virtual'] != 'physical' {
+    $vmname = capitalize($facts[virtual])
+    notify {"This is a ${vmname} virtual machine.":}
+    }
+  }
   
  # file { 'motd':
  #   ensure  => file,

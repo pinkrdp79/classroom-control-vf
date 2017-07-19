@@ -43,7 +43,7 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom
-}
+  
 file { '/etc/motd':
   ensure  => file,
   owner   => 'root',
@@ -55,4 +55,5 @@ file { '/etc/motd':
 package { 'cowsay':
   ensure   => present,
   provider => gem,
+}
 }

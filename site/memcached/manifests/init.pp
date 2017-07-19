@@ -3,7 +3,7 @@ class memcached {
     ensure => present,
   }
 
-  file { 'memcached'
+  file { 'memcached':
     path => '/etc/sysconfig/memcached',
     ensure => file,
     owner  => 'root',
@@ -13,7 +13,7 @@ class memcached {
     require => Package['memcached']
   }
 
-  service { 'memcache'
+  service { 'memcache':
     ensure => running,
     enable => true,
     subscribe => File['memcached'],

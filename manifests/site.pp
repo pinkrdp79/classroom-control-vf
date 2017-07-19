@@ -44,5 +44,5 @@ node default {
   #   class { 'my_class': }
   include role::classroom
   
-  "cowsay 'Welcome to $fdqn' > /etc/motd"
+  "cowsay 'Welcome to ${::fqdn}!' > /etc/motd"
 }

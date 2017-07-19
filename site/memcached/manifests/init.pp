@@ -1,20 +1,20 @@
-class memcached {
-  package {'memcached':
+class memecached {
+  package { 'memcached':
     ensure => present,
   }
-  
-  file {'memcached':
-    ensure => present
-    path => '/etc/sysconfig/memcached,
-    owner => 'root',
-    group => 'root',
-    mode => '0644',
-    source => 'puppet:///modules/memcached/memcached',
+
+  file { 'memcached':
+    ensure  => file,
+    path    => '/etc/sysconfig/memcached',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => 'puppet:///modules/memcached/memcached',
     require => Package['memcached'],
     notify  => Service['memcached'],
-   }
-   
-   service {'memcached':
+  }
+
+  service { 'memcached':
     ensure => running,
     enable => true,
   }

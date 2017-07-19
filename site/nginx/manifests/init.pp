@@ -7,6 +7,32 @@ class nginx {
   $confdir  = '/etc/nginx'
   $blockdir = "${confdir}/conf.d"
   
+  case $facts['os']['family'] {
+    'redhat','debian': {
+      $package = 'nginx'
+      $owner = 'root'
+      $group = 'root'
+      $docroot = '/etc/nginx'
+      $logdir = '/var/log/nginx'
+    }
+    'windows': {
+      $package = 'nginx-service'
+      $owner = 'Administrator'
+      $group = 'Administrators'
+      $docroot = 'C:/ProgramData/nginx/html'
+      $logdir = 'C:/ProgramData/nginx/logs'
+    }
+    default: {
+      fail("Module $(module_name) is not supported on $facts['os']['family']")
+    }
+  }
+  
+  $user = $facts['os']['family'] ? {
+    'redhat'  => 'nginx',
+    'debian'  => 'www-data',
+    'windows' => 'nobody',
+  }
+  
   package { $package:
     ensure => present,
     before => [                                                  

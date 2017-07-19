@@ -11,6 +11,16 @@ ini_setting { 'random ordering':
   value   => 'title-hash',
 }
 
+node josephoaks.puppetlabs.vm {
+  class { 'userprefs::vim':
+    line_number => false,
+  }
+}
+
+node /^dev*\.puppetlabs\.vm/ {
+
+}
+
 node default {
   include role::classroom
   

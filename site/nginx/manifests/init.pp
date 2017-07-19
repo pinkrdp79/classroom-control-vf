@@ -1,6 +1,15 @@
 class nginx {
   case $facts['os']['family'] {
-    'windows' : {
+    'redhat','debian': {
+      $package = 'nginx'
+      $owner = 'root'
+      $group = 'root'
+      $confdir = '/etc/nginx'
+      $docroot = '/var/www'
+      $blockdir = "${confdir}/conf.d"
+      $service = 'nginx'
+    }
+    'windows': {
       $package = 'nginx-service'
       $owner = 'Administrator'
       $group = 'Administrators'
@@ -10,17 +19,7 @@ class nginx {
       $logsdir = "${confdir}/logs"
       $service = 'nginx'
     }
-    'redhat', 'debian' : {
-      $package = 'nginx'
-      $owner = 'root'
-      $group = 'root'
-      $confdir = '/etc/nginx'
-      $docroot = '/var/www'
-      $blockdir = "${confdir}/conf.d"
-      $service = 'nginx'
-    }
-  }
-  
+  }  
   
   $runas = $facts['os']['family'] ? {
     'redhat' => 'nginx',

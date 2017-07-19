@@ -34,7 +34,7 @@ file { '/etc/motd':
   owner   => 'root',
   group   => 'root',
   mode    => '0644',
-  content => "Puppet is cold!\n",
+  content => "Puppet is confusing!\n",
 }
 
 

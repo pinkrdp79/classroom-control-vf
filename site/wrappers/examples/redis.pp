@@ -1,3 +1,1 @@
-class wrappers::redis { 
-include ::redis
-}
+include wrappers::redis

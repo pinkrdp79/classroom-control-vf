@@ -9,6 +9,7 @@ class nginx {
       $port     = '80'
       $confdir  = '/etc/nginx'
       $blockdir = "${confdir}/conf.d"
+      $logdir   = '/var/log/nginx'
     }
     'windows' : {
       $docroot  = 'C:/ProgramData/nginx/html'
@@ -19,6 +20,7 @@ class nginx {
       $port     = '80'
       $confdir  = 'C:/ProgramData/nginx'
       $blockdir = "${confdir}/conf.d"
+      $confdir  = 'C:/ProgramData/nginx/logs'
     }
     default : {
       fail("${module_name} is not support on ${facts['os']['family']}")
@@ -65,6 +67,7 @@ class nginx {
         user     => $user,
         confdir  => $confdir,
         blockdir => $blockdir,
+        logdir   => $logdir,
       })
   }
 

@@ -1,3 +1,5 @@
 class profile::wordpress {
-  class { 'wordpress':}
+  class { 'wordpress':
+    install_dir => '/var/www/wp'
+  }
 }

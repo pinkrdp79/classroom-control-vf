@@ -1,30 +1,14 @@
-class nginx {
-  case $facts['os']['family'] {
-    'redhat','debian': {
-      $package = 'nginx'
-      $owner = 'root'
-      $group = 'root'
-      $confdir = '/etc/nginx'
-      $docroot = '/var/www'
-      $blockdir = "${confdir}/conf.d"
-      $logdir = '/var/log/nginx'
-      $service = 'nginx'
-    }
-    'windows': {
-      $package = 'nginx-service'
-      $owner = 'Administrator'
-      $group = 'Administrators'
-      $confdir = 'C:/ProgramData/nginx'
-      $docroot = "${confdir}/html"
-      $blockdir = "${confdir}/conf.d"
-      $logdir = "${confdir}/logs"
-      $service = 'nginx'
-    }
-    default :{
-      fail("Module ${module_name} is not supported on ${facts['os']['family']}")
-    }
-  }  
-  
+class nginx (
+    String $package = $nginx::params::
+    String $owner = $nginx::params::
+    String $group = $nginx::params::
+    String $confdir = $nginx::params::
+    String $docroot = $nginx::params::
+    String $blockdir = $nginx::params::
+    String $logdir = $nginx::params::
+    String $service = $nginx::params::
+) inherits nginx::params {
+
   $runas = $facts['os']['family'] ? {
     'redhat' => 'nginx',
     'debian' => 'www-data',

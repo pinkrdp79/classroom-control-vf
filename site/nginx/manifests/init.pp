@@ -6,6 +6,7 @@ class nginx {
       $group    = 'root'
       $package  = 'nginx'
       $service  = 'nginx'
+      $port     = '80'
       $confdir  = '/etc/nginx'
       $blockdir = "${confdir}/conf.d"
     }
@@ -15,6 +16,7 @@ class nginx {
       $group    = 'Administrators'
       $package  = 'nginx'
       $service  = 'nginx'
+      $port     = '80'
       $confdir  = 'C:/ProgramData/nginx'
       $blockdir = "${confdir}/conf.d"
     }
@@ -72,6 +74,7 @@ class nginx {
     content => epp('nginx/default.conf.epp',
       {
         docroot => $docroot,
+        port    => $port,
       }),
   }
 

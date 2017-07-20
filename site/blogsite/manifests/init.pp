@@ -1,4 +1,4 @@
-class wordpress {
+class blogsite {
   class { 'wordpress':
   wp_owner    => 'wordpress',
   wp_group    => 'wordpress',

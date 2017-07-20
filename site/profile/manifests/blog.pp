@@ -1,6 +1,9 @@
 class profile::blog{
-  include apache
-  include 'apache::mod:php'
+  class {'apache':
+  }
+  class  {'apache::mod:php'
+    docroot => '/var/www'
+  }
   include 'mysql::server'
   include wordpress
 }

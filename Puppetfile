@@ -7,5 +7,4 @@ mod 'vcsrepo',
 
 mod 'puppetlabs-apache', '1.11.0'
 mod 'puppetlabs-mysql', '3.11.0'
-mod 'example42-php', '2.0.27'
 mod 'hunner-wordpress', '1.0.0'

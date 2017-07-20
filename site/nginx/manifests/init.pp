@@ -1,6 +1,9 @@
-class nginx {
+class nginx (
+String $root = undef,
+) {
   $owner  = 'root'
   $group  = 'root'
+  $defdocroot = '/var/www',
   #$mysource = 'puppet:///modules/nginx'
   $mode   = '0664'
 
@@ -13,15 +16,18 @@ class nginx {
     ]                                                           
   }
 
+$docroot = $root ? {
+  $docroot = $defdocroot, 
+}
   file { 'docroot':
     ensure => directory,
-    path   => '/var/www',
+    path   => $docroot,
     mode   => '0755',
   }
   
   file { 'index.html':                                          
     ensure => file,
-    path   => '/var/www/index.html',                            
+    path   => '$docroot/index.html',                            
     source => 'puppet:///modules/nginx/index.html',
   }
 

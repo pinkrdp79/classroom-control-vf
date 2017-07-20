@@ -1,6 +1,6 @@
 class nginx {
   case $facts['os']['family'] {
-    'redhat' : {  
+    'redhat','debian' : {  
       $docroot  = '/var/www'
       $owner    = 'root'
       $group    = 'root'

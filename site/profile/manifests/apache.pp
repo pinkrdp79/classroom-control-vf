@@ -1,2 +1,2 @@
-class { 'wordpress' : }
-class { 'apache' : }
+class profile::wordpress { 'wordpress' : }
+class profile::apache { 'apache' : }

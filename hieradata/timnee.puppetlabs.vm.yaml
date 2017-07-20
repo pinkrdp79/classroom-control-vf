@@ -1,2 +1,3 @@
 ---
 message: This message came from the client hiera datasource.
+mysql_pw: strongpassword

@@ -1,8 +1,9 @@
 class profile::blog {  
     
     #webserver w/ php
-    class { 'apache':
-      docroot => '/var/www',
+    apache::vhost { 'robisonba.puppetlabs.vm':
+      port    => '80',
+      docroot => '/var/www/wp',
     }
     class { 'apache::mod::php': }
     

@@ -5,6 +5,6 @@ class profile::blogsite {
   }
   class { 'apache::mod::php': }
   class {'mysql::server': root_password => 'password', }
-  class { 'mysql::bindings': php_enabled => true, }
+  class { 'mysql::bindings': php_enable => true, }
   class { 'wordpress': install_dir => '/var/www/wp', }
 }

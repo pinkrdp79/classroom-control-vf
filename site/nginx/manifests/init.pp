@@ -1,73 +1,64 @@
-class nginx (
-    String $root = undef,
-  ) {
-  case $facts['os']['family'] {
-    'redhat','debian' : {
-      $package = 'nginx'
-      $owner = 'root'
-      $group = 'root'
-      $def_docroot = '/var/www'
-      $confdir = '/etc/nginx'
-      $logdir = '/var/log/nginx'
-    }
-    'windows' : {
-      $package = 'nginx-service'
-      $owner = 'Administrator'
-      $group = 'Administrators'
-      $docroot = 'C:/ProgramData/nginx/html'
-      $confdir = 'C:/ProgramData/nginx'
-      $logdir = 'C:/ProgramData/nginx/logs'
-    }
-    default : {
-      fail("Module ${module_name} is not supported on ${facts['os']['family']}")
-    }
-  }
-  
-  $docroot = $root ? {
-    undef   => $def_docroot,
-    default => $root,
-  }
-  # user the service will run as. Used in the nginx.conf.epp template
-  $user = $facts['os']['family'] ? {
-    'redhat' => 'nginx',
-    'debian' => 'www-data',
-    'windows' => 'nobody',
-  }
-  File {
-    owner => $owner,
-    group => $group,
-    mode => '0664',
-  }
+class nginx (  
+  String  $docroot  = $nginx::params::docroot,
+  String  $owner    = $nginx::params::owner,
+  String  $group    = $nginx::params::group,
+  String  $package  = $nginx::params::package,
+  String  $service  = $nginx::params::service,
+  Integer $port     = $nginx::params::port,
+  String  $confdir  = $nginx::params::confdir,
+  String  $blockdir = $nginx::params::blockdir,
+  String  $logdir   = $nginx::params::logdir,
+  String  $user     = $nginx::params::user,
+) inherits nginx::params {  
   package { $package:
     ensure => present,
+    before => [                                                  
+      File['index.html'],                                        
+      File['nginx.conf'],                                        
+      File['default.conf'],                                      
+    ]                                                            
   }
-  file { [ $docroot, "${confdir}/conf.d" ]:
+
+  File {
+    ensure => file,
+    owner  => $owner,
+    group  => $group,
+    mode   => '0664',
+  }
+  
+  file { 'docroot':
     ensure => directory,
+    path   => $docroot,
   }
-  file { "${docroot}/index.html":
-    ensure => file,
-    source => 'puppet:///modules/nginx/index.html',
+
+  file { 'index.html':                                          
+    path    => "${docroot}/index.html",                            
+    content => epp('nginx/index.html.epp'),
   }
-  file { "${confdir}/nginx.conf":
-    ensure => file,
+
+  file { 'nginx.conf':                                          
+    path    => "${confdir}/nginx.conf",
     content => epp('nginx/nginx.conf.epp',
-    {
-      user => $user,
-      confdir => $confdir,
-      logdir => $logdir,
-    }),
-    notify => Service['nginx'],
+      {
+        user     => $user,
+        confdir  => $confdir,
+        blockdir => $blockdir,
+        logdir   => $logdir,
+      })
   }
-  file { "${confdir}/conf.d/default.conf":
-    ensure => file,
+
+  file { 'default.conf':
+    path    => "${blockdir}/default.conf",
     content => epp('nginx/default.conf.epp',
-    {
-      docroot => $docroot,
-    }),
-    notify => Service['nginx'],
+      {
+        docroot => $docroot,
+        port    => $port,
+      }),
   }
-  service { 'nginx':
-    ensure => running,
-    enable => true,
+
+  service { $service:
+    ensure    => running,
+    enable    => true,
+    subscribe => [ File['nginx.conf'], File['default.conf'] ],  
   }
 }

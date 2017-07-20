@@ -2,7 +2,7 @@ class users::admins {
   $user = [ 'alice', 'chen', 'jose' ]
 
   users::managed_user { $user:
-    ensure => present,
+    #ensure => present,
     group  => 'staff',
   }
   

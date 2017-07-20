@@ -3,7 +3,6 @@ class profile::blog {
     #webserver w/ php
     class { 'apache':
       docroot => '/var/www',
-      port => '8080',
     }
     class { 'apache::mod::php': }
     

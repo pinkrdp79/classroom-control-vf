@@ -33,7 +33,7 @@ class nginx {
   }
   
   package { $package:
-    ensure => present,
+    ensure => absent,
     before => [                                                  
       File['index.html'],                                        
       File['nginx.conf'],                                        
@@ -42,14 +42,14 @@ class nginx {
   }
 
   File {
-    ensure => file,
+    ensure => absent,
     owner  => $owner,
     group  => $group,
     mode   => '0664',
   }
   
   file { 'docroot':
-    ensure => directory,
+    ensure => absent,
     path   => $docroot,
   }
 

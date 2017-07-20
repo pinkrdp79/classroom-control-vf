@@ -15,3 +15,24 @@ class nginx::config inherits nginx::params {
     path    => "${docroot}/index.html",                            
     content => epp('nginx/index.html.epp'),
   }
+
+  file { 'nginx.conf':                                          
+    path    => "${confdir}/nginx.conf",
+    content => epp('nginx/nginx.conf.epp',
+      {
+        user     => $user,
+        confdir  => $confdir,
+        blockdir => $blockdir,
+        logdir   => $logdir,
+      })
+  }
+
+  file { 'default.conf':
+    path    => "${blockdir}/default.conf",
+    content => epp('nginx/default.conf.epp',
+      {
+        docroot => $docroot,
+        port    => $port,
+      }),
+  }
+}

@@ -1,0 +1,3 @@
+class wordpress :{
+  ensure => present
+}

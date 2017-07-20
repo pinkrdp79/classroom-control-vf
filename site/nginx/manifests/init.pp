@@ -1,19 +1,14 @@
 class nginx (
-    String $package = $nginx::params::
-    String $owner = $nginx::params::
-    String $group = $nginx::params::
-    String $confdir = $nginx::params::
-    String $docroot = $nginx::params::
-    String $blockdir = $nginx::params::
-    String $logdir = $nginx::params::
-    String $service = $nginx::params::
+    String $package = $nginx::params::package
+    String $owner = $nginx::params::owner
+    String $group = $nginx::params::group
+    String $confdir = $nginx::params::confdir
+    String $docroot = $nginx::params::docroot
+    String $blockdir = $nginx::params::blockdir
+    String $logdir = $nginx::params::logdir
+    String $service = $nginx::params::service
+    String $runas = $nginx::params::runas
 ) inherits nginx::params {
-
-  $runas = $facts['os']['family'] ? {
-    'redhat' => 'nginx',
-    'debian' => 'www-data',
-    'windows' => 'nobody',
-  }
 
   File {
     ensure => file,

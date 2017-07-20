@@ -1,10 +1,12 @@
-class nginx {
+class nginx (
+    String $root = undef,
+  ) {
   case $facts['os']['family'] {
     'redhat','debian' : {
       $package = 'nginx'
       $owner = 'root'
       $group = 'root'
-      $docroot = '/var/www'
+      $def_docroot = '/var/www'
       $confdir = '/etc/nginx'
       $logdir = '/var/log/nginx'
     }
@@ -19,6 +21,11 @@ class nginx {
     default : {
       fail("Module ${module_name} is not supported on ${facts['os']['family']}")
     }
+  }
+  
+  $docroot = $root ? {
+    undef   => $def_docroot,
+    default => $root,
   }
   # user the service will run as. Used in the nginx.conf.epp template
   $user = $facts['os']['family'] ? {

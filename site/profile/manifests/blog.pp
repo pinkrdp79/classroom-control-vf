@@ -1,7 +1,7 @@
 class profile::blog {
 #web server /php
   class{'apache":
-    docroot => "/var/www',
+    docroot => '/var/www',
   }  
 
 class {'apache::mod::php':}

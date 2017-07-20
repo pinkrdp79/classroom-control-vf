@@ -3,6 +3,7 @@ class prefile::blog {
   #web server / php
   class {'apache:
     docroot  => '/var/www',
+    port     => '8080',
   }
   
   class {'apche::mod::php':}

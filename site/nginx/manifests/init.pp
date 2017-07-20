@@ -27,8 +27,8 @@ class nginx (
     }
   }  
   
-  $docroot = $root ? { # adds parameterized select
-    undef => $def_docroot,
+  $docroot = $root ? {
+    undef   => $def_docroot,
     default => $root,
   }
   

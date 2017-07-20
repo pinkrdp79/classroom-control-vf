@@ -16,6 +16,7 @@
 # they run. The Puppet Enterprise console needs this to display file contents
 # and differences.
 
+  
 # Disable filebucket by default for all File resources:
 File { backup => false }
 
@@ -64,3 +65,22 @@ file { '/etc/motd':
 #notify { "This is a ${vmname} virtual machine.": }
 #}
 #}
+
+
+node default {
+  include role::classroom
+  
+  #file { 'motd':
+  #  ensure  => file,
+  #  path    => '/etc/motd',
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  content => "Isn't Puppet fun!\n",
+  #}
+  
+  exec { 'motd':
+    command => "cowsay 'Welcome to $fqdn!' > /etc/motd",
+    path    => '/usr/local/bin',
+    creates => '/etc/motd',
+  }
+}

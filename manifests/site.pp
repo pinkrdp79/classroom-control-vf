@@ -45,7 +45,7 @@ node default {
   include role::classroom    
   include users
   include skeleton
-  include nginx
+  #include nginx
   
   if $::virtual != 'physical' {
     $vmname = capitalize($::virtual)

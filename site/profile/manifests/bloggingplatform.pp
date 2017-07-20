@@ -8,4 +8,6 @@ class profile::bloggingplatform {
     remove_default_accounts => true,
     override_options        => $override_options
   }
+  
+  class { 'wordpress': }
 }

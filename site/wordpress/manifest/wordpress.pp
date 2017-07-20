@@ -1,2 +1,4 @@
 #
-class { 'wordpress': }
+class { 'wordpress':
+  wp_debug => true,
+}

@@ -35,3 +35,4 @@ class nginx::config {
         port    => $port,
       }),
   }
+}

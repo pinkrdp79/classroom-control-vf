@@ -1,5 +1,6 @@
 class profile::blog{
   include apache
-  include mysql
+  include apache::mod:php
+  include mysql::server
   include wordpress
 }

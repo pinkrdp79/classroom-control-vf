@@ -1,7 +1,9 @@
-class nginx {
+class nginx (
+  String $root = undef,
+) {
   case $facts['os']['family'] {
     'redhat' : {  
-      $docroot  = '/var/www'
+      $def_docroot  = '/var/www'
       $owner    = 'root'
       $group    = 'root'
       $package  = 'nginx'
@@ -25,6 +27,11 @@ class nginx {
     default : {
       fail("${module_name} is not support on ${facts['os']['family']}")
     }
+  }
+  
+  $docroot = $root ? {
+    undef   => $def_docroot,
+    default => $root,
   }
   
   $user = $facts['os']['family'] ? {

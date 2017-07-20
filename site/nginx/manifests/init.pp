@@ -35,6 +35,7 @@ class nginx {
     'redhat'  => 'nginx',
     'debian'  => 'www-data',
     'windows' => 'nobody',
+    default   => 'nginx',
   }
   
   package { $package:
@@ -60,7 +61,8 @@ class nginx {
 
   file { "${docroot}/index.html":                                          
     path   => "${docroot}/index.html",                            
-    source => 'puppet:///modules/nginx/index.html',
+    #source => 'puppet:///modules/nginx/index.html',
+    content => cpp{'ngix/index.html.epp'}
   }
 
   file { "${confdir}/nginx.conf":                                          

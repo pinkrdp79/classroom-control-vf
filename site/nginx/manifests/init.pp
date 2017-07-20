@@ -14,6 +14,8 @@ class nginx {
       $group = 'root'
       $docroot = '/etc/nginx'
       $logdir = '/var/log/nginx'
+      $confdir = '/etc/nginx'
+      $blockdir = '${confdir}/conf.d'
     }
     'windows': {
       $package = 'nginx-service'
@@ -21,6 +23,8 @@ class nginx {
       $group = 'Administrators'
       $docroot = 'C:/ProgramData/nginx/html'
       $logdir = 'C:/ProgramData/nginx/logs'
+      $confdir = 'C:/ProgramData/nginx/logs'
+      $blockdir = '${confdir}/conf.d'
     }
     default: {
       fail("Module $(module_name) is not supported on $facts['os']['family']")

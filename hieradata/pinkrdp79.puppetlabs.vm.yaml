@@ -1,2 +1,2 @@
 ---
-message: this is a message from Hiera at pinkrdp79.puppetlabs.vm
+message: 'this is a message from Hiera at pinkrdp79.puppetlabs.vm'

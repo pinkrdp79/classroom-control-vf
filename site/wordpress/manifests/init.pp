@@ -1,4 +1,4 @@
-class { 'wordpress':
+class wordpress { 'wordpress':
   wp_owner    => 'wordpress',
   wp_group    => 'wordpress',
   db_user     => 'wordpress',

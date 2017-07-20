@@ -1,3 +1,5 @@
 class profile::base {
-  notify { "Hello, my new name is ${::hostname}": }
+  $message = hiera('message')
+  notify { $message: }
+  # notify { "Hello, my new name is ${::hostname}": }
 }

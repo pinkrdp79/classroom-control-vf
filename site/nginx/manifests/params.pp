@@ -6,7 +6,7 @@ class nginx::params {
       $group    = 'root'
       $package  = 'nginx'
       $service  = 'nginx'
-      $port     = '80'
+      $port     = 80
       $confdir  = '/etc/nginx'
       $blockdir = "${confdir}/conf.d"
       $logdir   = '/var/log/nginx'
@@ -17,7 +17,7 @@ class nginx::params {
       $group    = 'Administrators'
       $package  = 'nginx'
       $service  = 'nginx'
-      $port     = '80'
+      $port     = 80
       $confdir  = 'C:/ProgramData/nginx'
       $blockdir = "${confdir}/conf.d"
       $confdir  = 'C:/ProgramData/nginx/logs'

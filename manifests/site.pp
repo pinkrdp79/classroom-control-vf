@@ -41,7 +41,7 @@ ini_setting { 'random ordering':
 node marykelsch.puppetlabs.vm {
   if $facts['virtual'] != 'physical' {
     $vmname = $facts['virtual']
-    notify { "This is a ${vmname} virtual machine.": }
+    notify { "\n=========\nThis is a ${vmname} virtual machine.\n==========\n": }
   }
 }
 

@@ -1,2 +1,3 @@
 ---
 message: 'this is a message from Hiera at pinkrdp79.puppetlabs.vm'
+nginx::root: '/var/www/hieraroot'

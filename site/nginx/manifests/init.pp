@@ -1,5 +1,8 @@
-class nginx {
-  $docroot  = '/var/www'
+class nginx (
+  string $root = undef,
+)
+ {
+  $def_docroot  = '/var/www'
   $owner    = 'root'
   $group    = 'root'
   $package  = 'nginx'
@@ -29,6 +32,11 @@ class nginx {
     default: {
       fail("Module $(module_name) is not supported on $facts['os']['family']")
     }
+  }
+  
+  $docroot = $root? {
+    undef   => $def_docroot,
+    default => $root,
   }
   
   $user = $facts['os']['family'] ? {

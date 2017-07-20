@@ -19,6 +19,9 @@ class nginx {
       $logsdir = "${confdir}/logs"
       $service = 'nginx'
     }
+    default :{
+      fail("Module ${module_name} is not supported on ${facts['os']['family']}")
+    }
   }  
   
   $runas = $facts['os']['family'] ? {

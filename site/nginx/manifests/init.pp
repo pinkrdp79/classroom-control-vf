@@ -1,13 +1,11 @@
-class nginx (
-  String $root = undef,
-){
+class nginx {
   case $facts['os']['family'] {
     'redhat','debian': {
       $package = 'nginx'
       $owner = 'root'
       $group = 'root'
       $confdir = '/etc/nginx'
-      $def_docroot = '/var/www'
+      $docroot = '/var/www'
       $blockdir = "${confdir}/conf.d"
       $logdir = '/var/log/nginx'
       $service = 'nginx'
@@ -17,7 +15,7 @@ class nginx (
       $owner = 'Administrator'
       $group = 'Administrators'
       $confdir = 'C:/ProgramData/nginx'
-      $def_docroot = "${confdir}/html"
+      $docroot = "${confdir}/html"
       $blockdir = "${confdir}/conf.d"
       $logdir = "${confdir}/logs"
       $service = 'nginx'
@@ -26,11 +24,6 @@ class nginx (
       fail("Module ${module_name} is not supported on ${facts['os']['family']}")
     }
   }  
-  
-  $docroot = $root ? {
-    undef   => $def_docroot,
-    default => $root,
-  }
   
   $runas = $facts['os']['family'] ? {
     'redhat' => 'nginx',

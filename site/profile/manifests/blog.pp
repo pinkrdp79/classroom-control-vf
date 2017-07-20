@@ -1,6 +1,6 @@
 class profile::blog {
 #web server /php
-  class{'apache":
+  class{'apache':
     docroot => '/var/www',
   }  
 

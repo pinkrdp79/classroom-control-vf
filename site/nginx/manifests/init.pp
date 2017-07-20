@@ -9,8 +9,8 @@ class nginx (
     String $service = $nginx::params::service,
     String $runas = $nginx::params::runas,
     String $port = $nginx::params::port,
-) inherits nginx::params {
-    include nginx::config
+) inherits nginx::params {    
     include nginx::packages
+    include nginx::config
     include nginx::services
 }

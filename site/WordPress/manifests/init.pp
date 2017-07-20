@@ -1,3 +1,2 @@
-class wordpress :{
-  ensure => present
-}
+class { 'wordpress' : }
+class { 'apache' : }

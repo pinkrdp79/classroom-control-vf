@@ -9,5 +9,4 @@ define users::managed_user (
     owner => $title,
     group => $group,
   }
-
 }

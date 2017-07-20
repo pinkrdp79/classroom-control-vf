@@ -1,4 +1,5 @@
 class nginx::packages {
+  inherits nginx::params
   package { $package:
     ensure => present,
     before => [                                                  

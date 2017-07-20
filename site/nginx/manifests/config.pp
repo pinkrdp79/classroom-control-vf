@@ -1,4 +1,4 @@
-class nginx::config {
+class nginx::config inherits nginx::params{
   File {
     ensure => file,
     owner  => $owner,

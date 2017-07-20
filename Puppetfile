@@ -13,3 +13,4 @@ mod 'arioch-redis', '3.1.0'
 
 mod 'puppetlabs-apache', '1.11.0'
 mod 'hunner-wordpress', '1.0.0'
+mod 'puppetlabs-mysql', '3.11.0'

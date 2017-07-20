@@ -7,6 +7,7 @@ class nginx {
       $confdir = '/etc/nginx'
       $docroot = '/var/www'
       $blockdir = "${confdir}/conf.d"
+      $logdir = '/var/log/nginx'
       $service = 'nginx'
     }
     'windows': {
@@ -16,7 +17,7 @@ class nginx {
       $confdir = 'C:/ProgramData/nginx'
       $docroot = "${confdir}/html"
       $blockdir = "${confdir}/conf.d"
-      $logsdir = "${confdir}/logs"
+      $logdir = "${confdir}/logs"
       $service = 'nginx'
     }
     default :{

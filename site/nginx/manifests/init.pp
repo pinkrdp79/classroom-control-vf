@@ -40,10 +40,9 @@ class nginx {
     ensure => directory,
   }
 
-  file { 'index.html':                                           # use titles instead of full paths
-    ensure => file,
-    path   => "${docroot}index.html",                             # using namevars make it easy to reference them later
-    source => 'puppet:///modules/nginx/index.html',
+  file { "${docroot}/index.html":
+     ensure => file,
+     source => 'puppet:///modules/nginx/index.html',
   }
 
   file { 'nginx.conf':                                           # use title

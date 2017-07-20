@@ -49,27 +49,39 @@ class nginx {
     mode   => '0664',
   }
   
-  file { 'docroot':
+  file { [$docroot,"${confdir}/conf.d]:
     ensure => directory,
     path   => $docroot,
   }
 
-  file { 'index.html':                                          
+  file { "${docroot}/index.html":                                          
     path   => "${docroot}/index.html",                            
     source => 'puppet:///modules/nginx/index.html',
   }
 
-  file { 'nginx.conf':                                          
-    path   => "${confdir}/nginx.conf",                          
-    source => 'puppet:///modules/nginx/nginx.conf',
+  file { "${confdir}/nginx.conf":                                          
+    path    => "${confdir}/nginx.conf",                          
+    source  => 'puppet:///modules/nginx/nginx.conf',
+    content => epp('nginx/nginx.conf.epp',
+        {
+         user     => $user,
+         confdir  => $confdir,
+         logdir   => $logdir,
+        } ),
+     notify  => Service['nginx'],
   }
 
-  file { 'default.conf':                                        
+  file { "${confdir}/default.conf":                                        
     path   => "${blockdir}/default.conf",                 
     source => 'puppet:///modules/nginx/default.conf',
+    content => epp('nginx/default.conf.epp',
+                 {
+                  docroot  => $docroot,
+                 } ),
+     notify => Service['nginx'],
   }
 
-  service { $service:
+  service { 'nginx':
     ensure    => running,
     enable    => true,
     subscribe => [ File['nginx.conf'], File['default.conf'] ],  

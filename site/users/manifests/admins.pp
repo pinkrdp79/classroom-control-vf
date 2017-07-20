@@ -1,11 +1,11 @@
 class users::admins {
-  users::managed_user { 'joe': }
-  users::managed_user { 'alice':
-    group => 'staff',
+  $user = [ 'alice', 'chen', 'jose' ]
+
+  users::managed_user { $user:
+    #ensure => present,
+    group  => 'staff',
   }
-  users::managed_user { 'aaron':
-    group => 'staff',
-  }
+  
   group { 'staff':
     ensure => present,
   }

@@ -45,7 +45,6 @@ node default {
   include role::classroom
   include users
   include skeleton
-  include nginx
   include memcached
 
   if $::virtual != 'physical' {

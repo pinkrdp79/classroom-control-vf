@@ -1,49 +1,66 @@
 class nginx {
-
-  $docroot  = '/var/www'
-  $ngxdir   = '/etc/nginx'
-  $pupfiles = 'puppet:///modules/nginx'
-  
+  case $facts['os']['family'] {
+    'redhat','debian' : {
+      $package = 'nginx'
+      $owner = 'root'
+      $group = 'root'
+      $docroot = '/var/www'
+      $confdir = '/etc/nginx'
+      $logdir = '/var/log/nginx'
+    }
+    'windows' : {
+      $package = 'nginx-service'
+      $owner = 'Administrator'
+      $group = 'Administrators'
+      $docroot = 'C:/ProgramData/nginx/html'
+      $confdir = 'C:/ProgramData/nginx'
+      $logdir = 'C:/ProgramData/nginx/logs'
+    }
+    default : {
+      fail("Module ${module_name} is not supported on ${facts['os']['family']}")
+    }
+  }
+  # user the service will run as. Used in the nginx.conf.epp template
+  $user = $facts['os']['family'] ? {
+    'redhat' => 'nginx',
+    'debian' => 'www-data',
+    'windows' => 'nobody',
+  }
   File {
-    ensure => file,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0664',
+    owner => $owner,
+    group => $group,
+    mode => '0664',
   }
-  
-  package { 'nginx':
+  package { $package:
     ensure => present,
-    before => [                                                 # Break arrays up into multiple
-      File['index.html'],                                       # lines as to not go beyond the
-      File['nginx.conf'],                                       # 80 characters per line and it
-      File['default.conf'],                                     # makes it easier to add new
-    ]                                                           # elements and easier to read.
   }
-  
-  file { 'docroot':
+  file { [ $docroot, "${confdir}/conf.d" ]:
     ensure => directory,
-    path   => $docroot,
-    mode   => '0755',
   }
-  
-  file { 'index.html':                                          # use titles instead of full paths
-    path   => "${docroot}/index.html",                            # using namevars make it easy to reference them later
-    source => "${pupfiles}/index.html",
+  file { "${docroot}/index.html":
+    ensure => file,
+    source => 'puppet:///modules/nginx/index.html',
   }
-
-  file { 'nginx.conf':                                           # use title
-    path   => "${ngxdir}/nginx.conf",                            # use of namevar
-    source => "${pupfiles}/nginx.conf",
+  file { "${confdir}/nginx.conf":
+    ensure => file,
+    content => epp('nginx/nginx.conf.epp',
+    {
+      user => $user,
+      confdir => $confdir,
+      logdir => $logdir,
+    }),
+    notify => Service['nginx'],
   }
-
-  file { 'default.conf':                                         # use of title
-    path   => "${ngxdir}/conf.d/default.conf",                  # use of namevar
-    source => "${pupfiles}/default.conf",
+  file { "${confdir}/conf.d/default.conf":
+    ensure => file,
+    content => epp('nginx/default.conf.epp',
+    {
+      docroot => $docroot,
+    }),
+    notify => Service['nginx'],
   }
-
   service { 'nginx':
     ensure => running,
     enable => true,
-    subscribe => [ File['nginx.conf'], File['default.conf'] ],   # use of single line array, small 1 or 2 elements only
   }
 }

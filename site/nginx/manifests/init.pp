@@ -8,55 +8,9 @@ class nginx (
     String $logdir = $nginx::params::logdir,
     String $service = $nginx::params::service,
     String $runas = $nginx::params::runas,
+    String $port = $nginx::params::port,
 ) inherits nginx::params {
-
-  File {
-    ensure => file,
-    owner => $owner,
-    group => $group,
-    mode => '0644',
-    require => Package['nginx']
-  }
-
-  package { $package:
-    ensure => present
-  }
-  
-  file { 'docroot':
-    ensure => directory,
-    path => $docroot,
-  }
-  
-  file { 'index.html':
-    path => "${docroot}/index.html",
-    source => 'puppet:///modules/nginx/index.html',
-  }
-  
-  file { 'nginx.conf':
-    path => "${confdir}/nginx.conf",
-    require => Package['nginx'],
-    content  => epp('nginx/nginx.conf.epp',
-      {
-        runas => $runas,
-        docroot => $docroot,
-        confdir => $confdir,
-        logdir => $logdir,
-        blockdir => $blockdir,
-      }),
-  }
-  
-  file { 'default.conf':
-    path => "${blockdir}/default.conf",
-    require => Package['nginx'],
-    content => epp('nginx/default.conf.epp',
-      {
-        docroot => $docroot,
-      }),
-  }
-  
-  service { $service:
-    ensure    => running,
-    enable    => true,
-    subscribe => [ File['nginx.conf'], File['default.conf'] ]
-  }
+    include nginx::config
+    include nginx::packages
+    include nginx::services
 }

@@ -1,49 +1,42 @@
 class nginx (
-  string $root = undef,
-)
- {
-  $def_docroot  = '/var/www'
-  $owner    = 'root'
-  $group    = 'root'
-  $package  = 'nginx'
-  $service  = 'nginx'
-  $confdir  = '/etc/nginx'
-  $blockdir = "${confdir}/conf.d"
-  
+  String $root = undef,
+) {
   case $facts['os']['family'] {
-    'redhat','debian': {
-      $package = 'nginx'
-      $owner = 'root'
-      $group = 'root'
-      $docroot = '/etc/nginx'
-      $logdir = '/var/log/nginx'
-      $confdir = '/etc/nginx'
-      $blockdir = '${confdir}/conf.d'
+    'redhat' : {  
+      $def_docroot  = '/var/www'
+      $owner    = 'root'
+      $group    = 'root'
+      $package  = 'nginx'
+      $service  = 'nginx'
+      $port     = '80'
+      $confdir  = '/etc/nginx'
+      $blockdir = "${confdir}/conf.d"
+      $logdir   = '/var/log/nginx'
     }
-    'windows': {
-      $package = 'nginx-service'
-      $owner = 'Administrator'
-      $group = 'Administrators'
-      $docroot = 'C:/ProgramData/nginx/html'
-      $logdir = 'C:/ProgramData/nginx/logs'
-      $confdir = 'C:/ProgramData/nginx/logs'
-      $blockdir = '${confdir}/conf.d'
+    'windows' : {
+      $docroot  = 'C:/ProgramData/nginx/html'
+      $owner    = 'Administrator'
+      $group    = 'Administrators'
+      $package  = 'nginx'
+      $service  = 'nginx'
+      $port     = '80'
+      $confdir  = 'C:/ProgramData/nginx'
+      $blockdir = "${confdir}/conf.d"
+      $confdir  = 'C:/ProgramData/nginx/logs'
     }
-    default: {
-      fail("Module $(module_name) is not supported on $facts['os']['family']")
+    default : {
+      fail("${module_name} is not support on ${facts['os']['family']}")
     }
   }
   
-  $docroot = $root? {
+  $docroot = $root ? {
     undef   => $def_docroot,
     default => $root,
   }
   
   $user = $facts['os']['family'] ? {
-    'redhat'  => 'nginx',
-    'debian'  => 'www-data',
     'windows' => 'nobody',
-    default   => 'nginx',
+    default  => 'nginx',
   }
   
   package { $package:
@@ -62,40 +55,40 @@ class nginx (
     mode   => '0664',
   }
   
-  file { [$docroot,"${confdir}/conf.d]:
+  file { 'docroot':
     ensure => directory,
     path   => $docroot,
   }
 
-  file { "${docroot}/index.html":                                          
-    path   => "${docroot}/index.html",                            
+  file { 'index.html':                                          
+    path    => "${docroot}/index.html",                            
     #source => 'puppet:///modules/nginx/index.html',
-    content => cpp{'ngix/index.html.epp'}
+    content => epp('nginx/index.html.epp'),
   }
 
-  file { "${confdir}/nginx.conf":                                          
-    path    => "${confdir}/nginx.conf",                          
-    source  => 'puppet:///modules/nginx/nginx.conf',
+  file { 'nginx.conf':                                          
+    path    => "${confdir}/nginx.conf",
+    #source => 'puppet:///modules/nginx/nginx.conf',
     content => epp('nginx/nginx.conf.epp',
-        {
-         user     => $user,
-         confdir  => $confdir,
-         logdir   => $logdir,
-        } ),
-     notify  => Service['nginx'],
+      {
+        user     => $user,
+        confdir  => $confdir,
+        blockdir => $blockdir,
+        logdir   => $logdir,
+      })
   }
 
-  file { "${confdir}/default.conf":                                        
-    path   => "${blockdir}/default.conf",                 
-    source => 'puppet:///modules/nginx/default.conf',
+  file { 'default.conf':
+    path    => "${blockdir}/default.conf",
+    #source => 'puppet:///modules/nginx/default.conf',
     content => epp('nginx/default.conf.epp',
-                 {
-                  docroot  => $docroot,
-                 } ),
-     notify => Service['nginx'],
+      {
+        docroot => $docroot,
+        port    => $port,
+      }),
   }
 
-  service { 'nginx':
+  service { $service:
     ensure    => running,
     enable    => true,
     subscribe => [ File['nginx.conf'], File['default.conf'] ],  

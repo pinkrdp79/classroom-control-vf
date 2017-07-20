@@ -1,39 +1,15 @@
-class nginx (
-  
-) {
-  case $facts['os']['family'] {
-    'redhat' : {  
-      $docroot  = '/var/www'
-      $owner    = 'root'
-      $group    = 'root'
-      $package  = 'nginx'
-      $service  = 'nginx'
-      $port     = '80'
-      $confdir  = '/etc/nginx'
-      $blockdir = "${confdir}/conf.d"
-      $logdir   = '/var/log/nginx'
-    }
-    'windows' : {
-      $docroot  = 'C:/ProgramData/nginx/html'
-      $owner    = 'Administrator'
-      $group    = 'Administrators'
-      $package  = 'nginx'
-      $service  = 'nginx'
-      $port     = '80'
-      $confdir  = 'C:/ProgramData/nginx'
-      $blockdir = "${confdir}/conf.d"
-      $confdir  = 'C:/ProgramData/nginx/logs'
-    }
-    default : {
-      fail("${module_name} is not support on ${facts['os']['family']}")
-    }
-  }
-  
-  $user = $facts['os']['family'] ? {
-    'windows' => 'nobody',
-    default  => 'nginx',
-  }
-  
+class nginx (  
+  String $docroot  = $nginx::params::docroot,
+  String $owner    = $nginx::params::owner,
+  String $group    = $nginx::params::group,
+  String $package  = $nginx::params::package,
+  String $service  = $nginx::params::service,
+  Int    $port     = $nginx::params::port,
+  String $confdir  = $nginx::params::confdir,
+  String $blockdir = $nginx::params::blockdir,
+  String $logdir   = $nginx::params::logdir,
+  String $user     = $nginx::params::user,
+) inherits nginx::params {  
   package { $package:
     ensure => present,
     before => [                                                  
@@ -57,13 +33,11 @@ class nginx (
 
   file { 'index.html':                                          
     path    => "${docroot}/index.html",                            
-    #source => 'puppet:///modules/nginx/index.html',
     content => epp('nginx/index.html.epp'),
   }
 
   file { 'nginx.conf':                                          
     path    => "${confdir}/nginx.conf",
-    #source => 'puppet:///modules/nginx/nginx.conf',
     content => epp('nginx/nginx.conf.epp',
       {
         user     => $user,
@@ -75,7 +49,6 @@ class nginx (
 
   file { 'default.conf':
     path    => "${blockdir}/default.conf",
-    #source => 'puppet:///modules/nginx/default.conf',
     content => epp('nginx/default.conf.epp',
       {
         docroot => $docroot,

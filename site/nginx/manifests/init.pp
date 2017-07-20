@@ -5,7 +5,7 @@ class nginx (
   String  $group    = $nginx::params::group,
   String  $package  = $nginx::params::package,
   String  $service  = $nginx::params::service,
-  Integer $port     = $nginx::params::port,
+  String $port     = $nginx::params::port,
   String  $confdir  = $nginx::params::confdir,
   String  $blockdir = $nginx::params::blockdir,
   String  $logdir   = $nginx::params::logdir,

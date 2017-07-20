@@ -1,3 +1,3 @@
 class profile::base {
-  notify { "Hello, my name is ${::hostname}": }
+  notify { "Hello, I'll be back ${::hostname}": }
 }

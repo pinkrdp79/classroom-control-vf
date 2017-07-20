@@ -8,7 +8,8 @@ class nginx::params {
       $docroot = '/var/www'
       $blockdir = "${confdir}/conf.d"
       $logdir = '/var/log/nginx'
-      $service = 'nginx'
+      $service = 'nginx'      
+      $port     = '80'
     }
     'windows': {
       $package = 'nginx-service'
@@ -19,6 +20,7 @@ class nginx::params {
       $blockdir = "${confdir}/conf.d"
       $logdir = "${confdir}/logs"
       $service = 'nginx'
+      $port     = '80'
     }
     default :{
       fail("Module ${module_name} is not supported on ${facts['os']['family']}")

@@ -1,44 +1,91 @@
-class nginx {
+class nginx (
+  
+) {
+  case $facts['os']['family'] {
+    'redhat' : {  
+      $docroot  = '/var/www'
+      $owner    = 'root'
+      $group    = 'root'
+      $package  = 'nginx'
+      $service  = 'nginx'
+      $port     = '80'
+      $confdir  = '/etc/nginx'
+      $blockdir = "${confdir}/conf.d"
+      $logdir   = '/var/log/nginx'
+    }
+    'windows' : {
+      $docroot  = 'C:/ProgramData/nginx/html'
+      $owner    = 'Administrator'
+      $group    = 'Administrators'
+      $package  = 'nginx'
+      $service  = 'nginx'
+      $port     = '80'
+      $confdir  = 'C:/ProgramData/nginx'
+      $blockdir = "${confdir}/conf.d"
+      $confdir  = 'C:/ProgramData/nginx/logs'
+    }
+    default : {
+      fail("${module_name} is not support on ${facts['os']['family']}")
+    }
+  }
+  
+  $user = $facts['os']['family'] ? {
+    'windows' => 'nobody',
+    default  => 'nginx',
+  }
+  
+  package { $package:
+    ensure => present,
+    before => [                                                  
+      File['index.html'],                                        
+      File['nginx.conf'],                                        
+      File['default.conf'],                                      
+    ]                                                            
+  }
+
   File {
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
+    ensure => file,
+    owner  => $owner,
+    group  => $group,
     mode   => '0664',
   }
   
-  package { 'nginx':
-    ensure => present,
-    before => [                                                  # Break arrays up into multiple
-      File['index.html'],                                        # lines as to not go beyond the
-      File['nginx.conf'],                                        # 80 characters per line and it
-      File['default.conf'],                                      # makes it easier to add new
-    ]                                                            # elements and easier to read.
-  }
-
   file { 'docroot':
     ensure => directory,
-    path   => '/var/www',
-    mode   => '0755',
+    path   => $docroot,
   }
 
-  file { 'index.html':                                           # use titles instead of full paths
-    path   => '/var/www/index.html',                             # using namevars make it easy to reference them later
-    source => 'puppet:///modules/nginx/index.html',
+  file { 'index.html':                                          
+    path    => "${docroot}/index.html",                            
+    #source => 'puppet:///modules/nginx/index.html',
+    content => epp('nginx/index.html.epp'),
   }
 
-  file { 'nginx.conf':                                           # use title,
-    path   => '/etc/nginx/nginx.conf',                           # use of namevar
-    source => 'puppet:///modules/nginx/nginx.conf',
+  file { 'nginx.conf':                                          
+    path    => "${confdir}/nginx.conf",
+    #source => 'puppet:///modules/nginx/nginx.conf',
+    content => epp('nginx/nginx.conf.epp',
+      {
+        user     => $user,
+        confdir  => $confdir,
+        blockdir => $blockdir,
+        logdir   => $logdir,
+      })
   }
 
-  file { 'default.conf':                                         # use of title
-    path   => '/etc/nginx/conf.d/default.conf',                  # use of namevar
-    source => 'puppet:///modules/nginx/default.conf',
+  file { 'default.conf':
+    path    => "${blockdir}/default.conf",
+    #source => 'puppet:///modules/nginx/default.conf',
+    content => epp('nginx/default.conf.epp',
+      {
+        docroot => $docroot,
+        port    => $port,
+      }),
   }
 
-  service { 'nginx':
+  service { $service:
     ensure    => running,
     enable    => true,
-    subscribe => [ File['nginx.conf'], File['default.conf'] ],   # use of single line array, small 1 or 2 elements only
+    subscribe => [ File['nginx.conf'], File['default.conf'] ],  
   }
 }

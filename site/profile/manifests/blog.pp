@@ -16,7 +16,7 @@ class profile::blog {
     
     #blogging platform
     class { 'wordpress': 
-      install_dir = '/var/www/wp'
+      install_dir => '/var/www/wp'
     }
     
 }

@@ -1,0 +1,5 @@
+class capstone {
+  
+  class { 'apache': }
+
+}

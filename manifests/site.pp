@@ -43,24 +43,17 @@ node default {
   # Example:
   #   class { 'my_class': }
   include role::classroom    
-  include users
-  include skeleton
-  #include nginx
+  #file { 'motd':
+  #  ensure  => file,
+  #  path    => '/etc/motd',
+  #  owner   => 'root',
+  #  group   => 'root',
+  #  content => "Isn't Puppet fun!\n",
+  #}
   
-  if $::virtual != 'physical' {
-    $vmname = capitalize($::virtual)
-    notify { 'virtual':
-      message => "Virtual machine detected. VM is running on ${vmname}!"
-    }
-  }
-
-  package { 'cowsay':
-    ensure   => present,
-    provider => gem,
-  }
-  
-  exec { "cowsay 'Welcome to ${::fqdn}!' > /etc/motd": 
-    path => '/usr/bin:/usr/local/bin',
+  exec { 'motd':
+    command => "cowsay 'Welcome to $fqdn!' > /etc/motd",
+    path    => '/usr/local/bin',
     creates => '/etc/motd',
-  }
+  } 
 }
